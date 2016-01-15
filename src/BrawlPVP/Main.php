@@ -59,3 +59,38 @@ class Main extends PluginBase Implements Listener {
  			}
 		}
 	}
+		public function onPlayerTouch(PlayerInteractEvent $event) {
+		if($event->getBlock()->getId() == 68 || $event->getBlock()->getId() == 63) {
+			$sign = $event->getPlayer()->getLevel()->getTile($event->getBlock());
+ 
+			if($sign instanceof Sign) {
+				$signtext = $sign->getText();
+ 				if($signtext[0] == "§l§4[Brawl]") {
+					$player = $event->getPlayer();
+					$name = $player->getName();
+					$this->getServer()->getScheduler()->scheduleRepeatingTask(new Task1($this), 20*60);
+					if(empty($signtext[3]) !== true) {
+						$worlds = $signtext[3];
+						$this->getServer()->loadLevel($worlds);
+ 						$event->getPlayer()->teleport(Server::getInstance()->getLevelByName($worlds)->getSafeSpawn());
+ 						if (($world = $this->getServer()->getLevelByName($worlds))) {
+							$count = count($world->getPlayers());
+ 							$player->sendTip(TextFormat::GREEN. "§l§4[Brawl] Téléportation en cour !");
+							$this->getServer()->broadcastMessage("§l§4[Brawl]§a $name rejoin la partie §7[$count/8]");
+							$player->setNameTag("§7" .$player->getName());
+							$player->setDisplayName("§7" .$player->getName());
+ 							$duration = $this->cfg->get("Duration");
+							$player->getInventory()->clearAll();
+							if($this->gameStarted === true & $this->timer = 60 & count($this->players)> 8 & $player->isOp()){
+								$event->setCancelled(true);
+								$player->sendMessage("§l§4[Brawl] Tu ne peut pas rejoindre cette partie");
+								$this->refreshSign();
+								return;
+								//sign event use
+ 							}
+ 						}
+ 					}
+				}
+			}
+		}
+     }
