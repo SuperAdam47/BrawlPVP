@@ -29,3 +29,14 @@ class Main extends PluginBase Implements Listener {
 	//scheduleDelayedTask
 	public $cfg;
 	public $players;
+	
+		public function onEnable() {
+		$this->saveDefaultConfig();
+ 		$this->cfg = $this->getConfig();
+		$this->getLogger()->info("BrawlPVP has been enable");
+	}
+
+ public function onDisable() {
+		$this->saveDefaultConfig();
+		$this->getLogger()->info("Brawl has been disable");
+	}
