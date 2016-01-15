@@ -40,3 +40,22 @@ class Main extends PluginBase Implements Listener {
 		$this->saveDefaultConfig();
 		$this->getLogger()->info("Brawl has been disable");
 	}
+
+	public function onSignChange(SignChangeEvent $event) {
+		if($event->getBlock()->getId() == 68 || $event->getBlock()->getId() == 63) {
+			$sign = $event->getPlayer()->getLevel()->getTile($event->getBlock());
+ 			if ($event->getLine ( 0 ) == "§l§4[Brawl]" && $event->getPlayer()->isOp()) {
+				$event->setLine(0,"§l§4[Brawl]");
+ 				if (($world = $this->getServer()->getLevelByName("worldname"))) {
+					$count = count($world->getPlayers());
+ 					$event->getLine(1);
+ 					$event->getLine(2);
+ 					$event->setLine(1,"§l§bPVP - BL !");
+ 					$event->setLine(2,"[$count/8]");
+ 					$player = $event->getPlayer();
+ 					$player->sendMessage("[PVPBRAWL] Succefully created !");
+ 					//create a new sign 
+ 				}
+ 			}
+		}
+	}
