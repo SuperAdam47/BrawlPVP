@@ -1,8 +1,9 @@
 ---
 name: BrawlPVP
-main: BPVP\Main
+main: BrawlPVP\Main
 version: 1.0.0
 api: [1.12.0]
 author: MrReskill,TutoGamerWalid
 authors: [MrReskill,TutoGamerWalid]
+load: STARTUP
 description: Plugin BrawlPVP copyright DestinyPE et ses trois fondateur -> MrReskill, TutoGamerWalid, HugoMayo
