@@ -24,6 +24,7 @@ use pocketmine\event\block\SignChangeEvent;
 use pocketmine\item\Item;
 use pocketmine\Server;
 use pocketmine\Player;
+use onebone\economyapi\EconomyAPI;
 
 class Main extends PluginBase Implements Listener {
 	//scheduleDelayedTask
@@ -34,6 +35,7 @@ class Main extends PluginBase Implements Listener {
 		public function onEnable() {
 		$this->saveDefaultConfig();
  		$this->cfg = $this->getConfig();
+                $this->api = EconomyAPI::getInstance();
 		$this->getLogger()->info("BrawlPVP has been enable");
 	}
 
@@ -95,3 +97,34 @@ class Main extends PluginBase Implements Listener {
 			}
 		}
      }
+
+     	public function onRespawn(PlayerRespawnEvent $event) {
+		$player = $event->getPlayer();
+		$player->setNameTag($player->getName());
+        }
+        
+        public function removePlayers($p, $players) {
+           if (strtolower($players) == "players") { 
+              unset($this->players[array_search($p, $this->players)]);
+                 return true; 
+                 }
+        }
+
+        public function onDeath(PlayerDeathEvent $event) {
+           if ($event->getPlayer($event->getEntity()->getName()) && $this->gameStarted == true) {
+            $this->removePlayers($event->getEntity()->getName(), "players");
+            $event->getEntity()->teleport($this->getServer()->getLevelByName($this->cfg->get("quitte_level")->getSafeSpawn()));
+        }
+        foreach ($this->players as $players) {
+                if (count($this->players) == 1 && $this->gameStarted == true) {
+                    $this->getServer()->getPlayer($b)->getInventory()->clearAll();
+                    $this->removePlayers($p, "players");
+                    $this->getServer()->getPlayer($players)->teleport($this->getServer()->getLevelByName($this->cfg->get("winner_level")->getSafeSpawn()));
+                    $argent = $this->cfg->get("argent_gagnant");
+                    $this->getServer()->broadcastMessage("§l§a[PvPBrawl] ".$players->getName()." a gagne la partie ".$argent." + Coins !");
+                    $this->api->addMoney($players, $argent);
+                    $this->gameStarted = false;
+                }
+            }
+        }
+   }
