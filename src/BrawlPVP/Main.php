@@ -30,7 +30,7 @@ class Main extends PluginBase Implements Listener {
 	//scheduleDelayedTask
 	public $cfg;
 	public $players;
-        public $gameStarted = [];
+        public $gameStarted = false;
 	
 		public function onEnable() {
 		$this->saveDefaultConfig();
